@@ -12,7 +12,7 @@ export const classes = {
   useFeature: "vtt-use-feature",
 };
 
-export const messageType = { enqueue: 0, dequeue: 1, clear: 2 };
+export const messageType = { enqueue: 0, clear: 1, ready: 2, run: 3 };
 
 /**
  * Run a callback after an element loads.

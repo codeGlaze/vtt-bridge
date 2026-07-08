@@ -16,9 +16,8 @@ export const addSelectTabListeners = (store) => onElementLoad(".w-50-p .flex-gro
 
 const ready = (store) => {
   // Find all 5 tabs. A tab is not done loading until it has an orange bar as its child.
-  const [combatTab, proficienciesTab, spellsTab, featuresTab, equipmentTab] = document.querySelectorAll(
-    ".w-50-p .flex-grow-1.t-a-c",
-  );
+  const [combatTab, proficienciesTab, spellsTab, featuresTab, equipmentTab] =
+    document.querySelectorAll(".w-50-p .flex-grow-1.t-a-c");
 
   combatTab.addEventListener("click", () => {
     console.debug("Selected combat tab");

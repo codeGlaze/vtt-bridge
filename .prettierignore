@@ -1,0 +1,7 @@
+# Markdown docs were never covered by Prettier under the old setup (Prettier
+# only ran through the ESLint "prettier/prettier" rule against JS files); keep
+# that scope rather than reformatting unrelated documentation.
+*.md
+
+.output/
+.wxt/

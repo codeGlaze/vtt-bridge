@@ -1,7 +1,7 @@
 import "notyf/notyf.min.css";
 
 import { Notyf } from "notyf";
-import manifest from "../manifest.json";
+import { browser } from "wxt/browser";
 
 const successNotyf = new Notyf();
 const errorNotyf = new Notyf();
@@ -15,7 +15,7 @@ const visibilityNotyf = new Notyf({
 
 export const showConnected = () =>
   successNotyf.success({
-    message: "Connected to VTT Bridge v" + manifest.version + "!",
+    message: "Connected to VTT Bridge v" + browser.runtime.getManifest().version + "!",
     duration: 0,
     dismissible: true,
   });

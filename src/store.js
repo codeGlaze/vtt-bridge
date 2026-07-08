@@ -1,6 +1,23 @@
-import Store from "beedle";
+export const createStore = () => {
+  let state = { ...initialState };
+  const subscribers = [];
 
-export const createStore = () => new Store({ actions, mutations, initialState });
+  const context = {
+    commit(mutationName, payload) {
+      state = mutations[mutationName](state, payload);
+      subscribers.forEach((subscriber) => subscriber(state));
+    },
+  };
+
+  return {
+    dispatch(actionName, payload) {
+      actions[actionName](context, payload);
+    },
+    subscribe(callback) {
+      subscribers.push(callback);
+    },
+  };
+};
 
 export const STORE_CHARACTER = "character";
 export const STORE_CLICK = "click";
