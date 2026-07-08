@@ -36,6 +36,12 @@ jobs:
       - name: Build (Firefox)
         run: npm run build:firefox
 
+      - name: Install Playwright browsers
+        run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=0 npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npx playwright test
+
       - name: Validate Firefox build with addons-linter
         run: npx addons-linter .output/firefox-mv3
 

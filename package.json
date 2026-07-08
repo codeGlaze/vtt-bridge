@@ -8,6 +8,7 @@
   "dependencies": {},
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.61.1",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^16.5.0",
@@ -24,6 +25,7 @@
     "zip:firefox": "wxt zip -b firefox",
     "postinstall": "wxt prepare",
     "test": "vitest run",
+    "test:e2e": "npm run build && playwright test",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

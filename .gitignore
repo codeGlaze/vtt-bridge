@@ -62,6 +62,10 @@ typings/
 .output/
 .wxt/
 
+# Playwright
+test-results/
+playwright-report/
+
 # Editor configuration
 .vscode/
 

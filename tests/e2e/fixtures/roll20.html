@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Roll20 fixture</title>
+  </head>
+  <body>
+    <!-- roll20.content.js: wrapper around the chat textarea and send button;
+         also the "chat ready" anchor (src/selectors.js ROLL20.chatInput /
+         ROLL20.chatTextarea / ROLL20.chatSendButton). -->
+    <div id="textchat-input">
+      <textarea></textarea>
+      <button type="button">Send</button>
+    </div>
+
+    <!-- Stands in for Roll20's chat log: posting appends the textarea's
+         value at the moment of the click, simulating Roll20 accepting the
+         chat message. -->
+    <div id="chat-log"></div>
+
+    <script>
+      document.querySelector("#textchat-input button").addEventListener("click", () => {
+        const textarea = document.querySelector("#textchat-input textarea");
+        const entry = document.createElement("div");
+        entry.className = "chat-entry";
+        entry.textContent = textarea.value;
+        document.getElementById("chat-log").appendChild(entry);
+      });
+    </script>
+  </body>
+</html>

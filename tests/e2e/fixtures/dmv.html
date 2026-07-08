@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>DMV fixture</title>
+  </head>
+  <body>
+    <!-- dispatch/index.js: brittle proxy element indicating the character sheet
+         app has finished loading (src/selectors.js DMV.appReady). -->
+    <div class="class-name">Fighter</div>
+
+    <!-- dispatch/setCharacter.js (src/selectors.js DMV.characterName). -->
+    <div class="character-name">Test Hero</div>
+
+    <!-- dispatch/toggleVisibility.js injects its toggle button here
+         (src/selectors.js DMV.characterSummary). -->
+    <div class="character-summary"></div>
+
+    <!-- dispatch/rollAbilityScore.js: six buttons, read positionally in
+         STR/DEX/CON/INT/WIS/CHA order (src/selectors.js DMV.abilityScores /
+         DMV.abilityScoreRollButtons). -->
+    <div class="ability-scores">
+      <div class="ability-score">
+        <span class="ability-score-name">STR</span>
+        <button type="button" class="roll-button">+3</button>
+      </div>
+      <div class="ability-score">
+        <span class="ability-score-name">DEX</span>
+        <button type="button" class="roll-button">+1</button>
+      </div>
+      <div class="ability-score">
+        <span class="ability-score-name">CON</span>
+        <button type="button" class="roll-button">+2</button>
+      </div>
+      <div class="ability-score">
+        <span class="ability-score-name">INT</span>
+        <button type="button" class="roll-button">+0</button>
+      </div>
+      <div class="ability-score">
+        <span class="ability-score-name">WIS</span>
+        <button type="button" class="roll-button">-1</button>
+      </div>
+      <div class="ability-score">
+        <span class="ability-score-name">CHA</span>
+        <button type="button" class="roll-button">+4</button>
+      </div>
+    </div>
+
+    <!-- dispatch/rollSkill.js: every "tr" inside ".skills" must carry both
+         ".skill-name" and ".roll-button", since the dispatcher walks every
+         row unconditionally (src/selectors.js DMV.skills / DMV.skillName). -->
+    <table class="skills">
+      <tbody>
+        <tr>
+          <td class="skill-name">Acrobatics</td>
+          <td><button type="button" class="roll-button">+5</button></td>
+        </tr>
+        <tr>
+          <td class="skill-name">Perception</td>
+          <td><button type="button" class="roll-button">+2</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- dispatch/rollSavingThrow.js: the dispatcher locates the first
+         ".saving-throw-name", walks up to the closest wrapping "table", then
+         walks every "tr" in that table -- so, as with skills, every row in
+         this table must carry both ".saving-throw-name" and ".roll-button"
+         (src/selectors.js DMV.savingThrowName / DMV.savingThrowNameAnchor). -->
+    <table class="saving-throws">
+      <tbody>
+        <tr>
+          <td class="saving-throw-name">STR</td>
+          <td><button type="button" class="roll-button">+3</button></td>
+        </tr>
+        <tr>
+          <td class="saving-throw-name">DEX</td>
+          <td><button type="button" class="roll-button">+1</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- dispatch/rollInitiative.js (only wired up once the combat tab is
+         selected via dispatch/selectTab.js, which this fixture does not
+         include); kept here so the fixture matches every DMV.initiative
+         consumer structurally (src/selectors.js DMV.initiative). -->
+    <div class="initiative">
+      <button type="button" class="roll-button">+1</button>
+    </div>
+  </body>
+</html>

@@ -33,6 +33,9 @@ Both commands are powered by [WXT](https://wxt.dev/), which opens a browser inst
 # Run unit tests (Vitest) for src/transform
 npm test
 
+# Build the extension, then run the Playwright end-to-end suite against it
+npm run test:e2e
+
 # Lint with ESLint
 npm run lint
 
@@ -42,6 +45,11 @@ npm run format:check
 # Auto-format with Prettier
 npm run format
 ```
+
+`npm run test:e2e` loads the built extension (`.output/chrome-mv3/`) into a
+headless Chromium instance and drives it against local, hand-built replicas
+of the DMV character sheet and Roll20 chat panel -- no network access is
+required or used. See `tests/README.md` for details.
 
 ## Building
 
@@ -66,4 +74,4 @@ npm run zip:firefox
 - `src/notify.js` — user-facing notifications
 - `src/common.js` — shared helpers
 
-`tests/` contains a legacy Python/Selenium end-to-end harness that is pending replacement with Playwright; see ROADMAP.md (Phase 3) for details.
+`tests/e2e/` contains the Playwright end-to-end harness; see `tests/README.md` for details.
