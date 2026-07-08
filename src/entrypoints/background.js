@@ -3,7 +3,7 @@ import { defineBackground } from "wxt/utils/define-background";
 
 import { messageType } from "@/common";
 
-const QUEUE_KEY = "commandQueue";
+const QUEUE_KEY = "intentQueue";
 const TABS_KEY = "roll20Tabs";
 
 const getQueue = async () => (await browser.storage.session.get(QUEUE_KEY))[QUEUE_KEY] ?? [];
@@ -28,13 +28,13 @@ const removeTab = async (tabId) => {
 };
 
 /**
- * Try to deliver commands to every registered Roll20 tab.
+ * Try to deliver intents to every registered Roll20 tab.
  *
  * Tabs that fail to receive the message (e.g. because they were closed) are
  * dropped from the registry. Returns whether at least one tab received the
- * commands.
+ * intents.
  */
-const deliver = async (commands) => {
+const deliver = async (intents) => {
   const tabs = await getTabs();
   const stale = [];
   let delivered = false;
@@ -42,7 +42,7 @@ const deliver = async (commands) => {
   await Promise.all(
     tabs.map(async (tabId) => {
       try {
-        await browser.tabs.sendMessage(tabId, { type: messageType.run, commands });
+        await browser.tabs.sendMessage(tabId, { type: messageType.run, intents });
         delivered = true;
       } catch {
         stale.push(tabId);
@@ -57,11 +57,11 @@ const deliver = async (commands) => {
   return delivered;
 };
 
-const handleEnqueue = async (commands) => {
-  const delivered = await deliver(commands);
+const handleEnqueue = async (intents) => {
+  const delivered = await deliver(intents);
   if (!delivered) {
     const queue = await getQueue();
-    await setQueue([...queue, ...commands]);
+    await setQueue([...queue, ...intents]);
   }
 };
 
@@ -75,7 +75,7 @@ export default defineBackground(() => {
   browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.type) {
       case messageType.enqueue:
-        handleEnqueue(message.commands).then(() => sendResponse({ ok: true }));
+        handleEnqueue(message.intents).then(() => sendResponse({ ok: true }));
         return true;
 
       case messageType.ready:

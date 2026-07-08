@@ -23,11 +23,12 @@ export default defineContentScript({
     let lastVisibility = true;
     store.subscribe((state) => {
       if (state.click !== null) {
-        const { toast, commands } = parseState(state);
+        const { toast, intent } = parseState(state);
         showToast(toast);
         console.debug(`Showed command toast: ${toast}`);
-        browser.runtime.sendMessage({ type: messageType.enqueue, commands });
-        console.debug(`Sent commands to background: ${JSON.stringify(commands)}`);
+        const intents = [intent];
+        browser.runtime.sendMessage({ type: messageType.enqueue, intents });
+        console.debug(`Sent intents to background: ${JSON.stringify(intents)}`);
       } else if (state.error !== lastError) {
         showError(formatError(state.error));
         lastError = state.error;

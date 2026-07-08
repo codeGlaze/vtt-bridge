@@ -2,6 +2,7 @@ import { browser } from "wxt/browser";
 import { defineContentScript } from "wxt/utils/define-content-script";
 
 import { messageType, onElementLoad } from "@/common";
+import { renderIntents } from "@/transform/renderRoll20";
 import { ROLL20 } from "@/selectors";
 import { showConnected } from "@/notify";
 
@@ -43,7 +44,7 @@ export default defineContentScript({
   main() {
     browser.runtime.onMessage.addListener((message) => {
       if (message.type === messageType.run) {
-        runCommands(message.commands);
+        runCommands(renderIntents(message.intents));
       }
     });
 

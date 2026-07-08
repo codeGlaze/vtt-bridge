@@ -14,7 +14,7 @@ test("a roll clicked with no Roll20 tab open is dropped, not delivered late", as
   const background = await getBackgroundWorker(context);
   await expect
     .poll(() =>
-      background.evaluate(() => chrome.storage.session.get("commandQueue").then((r) => (r.commandQueue ?? []).length)),
+      background.evaluate(() => chrome.storage.session.get("intentQueue").then((r) => (r.intentQueue ?? []).length)),
     )
     .toBeGreaterThan(0);
 
