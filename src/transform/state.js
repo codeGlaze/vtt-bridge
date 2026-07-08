@@ -22,9 +22,10 @@ export const intentKinds = {
  * @typedef {Object} RollIntent
  *
  * A plain-JSON description of a roll or action a player triggered on the DMV
- * side. It carries no VTT-specific text or syntax -- a "sink" module (e.g.
- * `./renderRoll20`) turns it into chat commands for a particular VTT at
- * delivery time. Because it crosses `runtime.sendMessage` and
+ * side. It carries no VTT-specific text or syntax -- a per-VTT "tap" module
+ * (e.g. `../taps/roll20`) turns it into chat commands (or, for Owlbear,
+ * locally-rolled dice) for a particular VTT at delivery time. Because it
+ * crosses `runtime.sendMessage` and
  * `storage.session`, it must be structured-clone/JSON-safe: plain strings,
  * booleans, and no `undefined` fields (only the fields relevant to `kind`
  * are present).

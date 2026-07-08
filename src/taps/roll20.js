@@ -1,14 +1,14 @@
-import { makeD20Roll, makeDamageRoll, makeDescription, makeEmote, makeWeaponAttack } from "./commands";
+import { makeD20Roll, makeDamageRoll, makeDescription, makeEmote, makeWeaponAttack } from "../transform/commands";
 
-import { intentKinds } from "./state";
+import { intentKinds } from "../transform/state";
 
 /**
- * The Roll20 "sink": turns a {@link RollIntent} (see `./state`) into the
- * Roll20 chat command string(s) it represents. This is the only place that
- * knows about Roll20 chat syntax; a future second VTT would get its own
- * sink module implementing the same `renderIntents` shape.
+ * The Roll20 "sink": turns a {@link RollIntent} (see `../transform/state`)
+ * into the Roll20 chat command string(s) it represents. This is the only
+ * place that knows about Roll20 chat syntax; a future second VTT would get
+ * its own sink module implementing the same `renderIntents` shape.
  *
- * @param {import("./state").RollIntent} intent
+ * @param {import("../transform/state").RollIntent} intent
  * @returns {string[]}
  */
 const renderIntent = (intent) => {
@@ -16,7 +16,7 @@ const renderIntent = (intent) => {
   // cast the rest to non-optional so each switch case below can use them
   // directly, exactly as `parseState` guarantees for that `kind`.
   const { kind, character, name, mod, damage, attack, description, advantage, disadvantage, visible } =
-    /** @type {Required<import("./state").RollIntent>} */ (intent);
+    /** @type {Required<import("../transform/state").RollIntent>} */ (intent);
   const options = { hasAdvantage: advantage, hasDisadvantage: disadvantage, visible };
 
   switch (kind) {
@@ -49,7 +49,7 @@ const renderIntent = (intent) => {
  * Render a list of intents (in delivery order) into the flat list of Roll20
  * chat command strings they produce.
  *
- * @param {import("./state").RollIntent[]} intents
+ * @param {import("../transform/state").RollIntent[]} intents
  * @returns {string[]}
  */
 export const renderIntents = (intents) => intents.flatMap(renderIntent);

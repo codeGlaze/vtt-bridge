@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Owlbear fixture</title>
+  </head>
+  <body>
+    <!-- Stands in for the "VTT Bridge" Owlbear room extension: an iframe
+         speaking the window.postMessage protocol v1 documented in
+         src/taps/protocol.js. It's same-origin here (via srcdoc), for
+         fixture simplicity -- the real room extension is a cross-origin
+         iframe, which is exactly why the protocol never relies on the two
+         sides sharing an origin. On load it says hello to window.parent
+         (src/entrypoints/owlbear-bridge.content.js / owlbear.content.js),
+         repeating every 100ms until it sees a "hello-ack" -- a real
+         cross-origin iframe takes a full HTTP round-trip to load, almost
+         certainly slower than the extension's content scripts attach their
+         listeners, but this srcdoc fixture loads near-instantly, so it must
+         retry itself instead of racing a one-shot hello against
+         content-script startup. It also collects every "roll" message it
+         receives into `window.receivedRolls`, on the iframe's own window --
+         read by the test through the iframe's execution context, not the
+         top page's. -->
+    <iframe id="tap-iframe"></iframe>
+
+    <script>
+      const iframe = document.getElementById("tap-iframe");
+      iframe.srcdoc = `
+        <script>
+          window.receivedRolls = [];
+          let acked = false;
+          window.addEventListener("message", (event) => {
+            const data = event.data;
+            if (!data || data.source !== "vtt-bridge" || data.v !== 1) {
+              return;
+            }
+            if (data.type === "hello-ack") {
+              acked = true;
+            } else if (data.type === "roll") {
+              window.receivedRolls.push(data.roll);
+            }
+          });
+          const sayHello = () => {
+            if (acked) {
+              return;
+            }
+            window.parent.postMessage({ source: "vtt-bridge-tap", v: 1, type: "hello" }, "*");
+          };
+          sayHello();
+          setInterval(sayHello, 100);
+        <\/script>
+      `;
+    </script>
+  </body>
+</html>

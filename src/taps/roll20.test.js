@@ -1,6 +1,6 @@
 import { classes } from "../common";
-import { intentKinds, parseState } from "./state";
-import { renderIntents } from "./renderRoll20";
+import { intentKinds, parseState } from "../transform/state";
+import { renderIntents } from "./roll20";
 
 // These three cases mirror the exact click fixtures that used to live in
 // state.test.js, back when `parseState` produced Roll20 command strings

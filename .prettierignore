@@ -5,3 +5,7 @@
 
 .output/
 .wxt/
+
+# Separate sub-package (own tooling, own build output), owned by a
+# different agent.
+owlbear-extension/

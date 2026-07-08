@@ -4,7 +4,10 @@ import globals from "globals";
 
 export default [
   {
-    ignores: [".output/**", ".wxt/**", "node_modules/**"],
+    // owlbear-extension/ is a separate sub-package (its own package.json,
+    // node_modules, and esbuild bundle output) owned by a different agent,
+    // with its own tooling -- not this project's lint surface.
+    ignores: [".output/**", ".wxt/**", "node_modules/**", "owlbear-extension/**"],
   },
   js.configs.recommended,
   {

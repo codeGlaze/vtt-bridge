@@ -2,7 +2,7 @@ import { browser } from "wxt/browser";
 import { defineContentScript } from "wxt/utils/define-content-script";
 
 import { messageType, onElementLoad } from "@/common";
-import { renderIntents } from "@/transform/renderRoll20";
+import { renderIntents } from "@/taps/roll20";
 import { ROLL20 } from "@/selectors";
 import { showConnected } from "@/notify";
 
