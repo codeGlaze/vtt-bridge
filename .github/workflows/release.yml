@@ -1,0 +1,70 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build (Chrome)
+        run: npm run build
+
+      - name: Build (Firefox)
+        run: npm run build:firefox
+
+      - name: Zip (Chrome)
+        run: npm run zip
+
+      - name: Zip (Firefox)
+        run: npm run zip:firefox
+
+      # Optional: sign and upload the Firefox build to addons.mozilla.org.
+      # Stays dormant until the AMO store-account decision (ROADMAP.md
+      # §4.1) is made and these secrets are configured on the repo.
+      - name: Sign and upload to AMO
+        if: ${{ secrets.AMO_JWT_ISSUER != '' }}
+        run: npx web-ext sign --source-dir .output/firefox-mv3 --channel listed --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
+        env:
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+
+      # Optional: upload the Chrome build to the Chrome Web Store. Stays
+      # dormant until the CWS store-account decision (ROADMAP.md §4.1) is
+      # made and these secrets are configured on the repo.
+      - name: Upload to Chrome Web Store
+        if: ${{ secrets.CWS_EXTENSION_ID != '' }}
+        run: npx chrome-webstore-upload-cli@3 upload --source .output/*-chrome.zip --extension-id "$CWS_EXTENSION_ID" --client-id "$CWS_CLIENT_ID" --client-secret "$CWS_CLIENT_SECRET" --refresh-token "$CWS_REFRESH_TOKEN"
+        env:
+          CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+          CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: .output/*.zip

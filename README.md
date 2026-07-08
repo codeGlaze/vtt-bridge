@@ -15,32 +15,11 @@
 </div>
 
 <div align="center">
-    <a href="https://addons.mozilla.org/en-CA/firefox/addon/vtt-bridge/">
-        <img src="https://img.shields.io/amo/v/vtt-bridge" alt="Mozilla Add-On version badge">
+    <a href="https://github.com/codeGlaze/vtt-bridge/actions/workflows/ci.yml">
+        <img src="https://github.com/codeGlaze/vtt-bridge/actions/workflows/ci.yml/badge.svg" alt="CI badge">
     </a>
-    <a href="https://addons.mozilla.org/en-CA/firefox/addon/vtt-bridge/">
-        <img src="https://img.shields.io/amo/users/vtt-bridge" alt="Mozilla Add-on users badge">
-    </a>
-</div>
-
-<div align="center">
-    <a href="https://chrome.google.com/webstore/detail/vtt-bridge/fadncbccmelchegmlghbhpjchdmghmhh">
-        <img src="https://img.shields.io/chrome-web-store/v/fadncbccmelchegmlghbhpjchdmghmhh" alt="Chrome Web Store version badge">
-    </a>
-    <a href="https://chrome.google.com/webstore/detail/vtt-bridge/fadncbccmelchegmlghbhpjchdmghmhh">
-        <img src="https://img.shields.io/chrome-web-store/users/fadncbccmelchegmlghbhpjchdmghmhh" alt="Chrome Web Store users badge">
-    </a>
-</div>
-
-<div align="center">
-    <a href="https://github.com/averycrespi/vtt-bridge/commits/master">
-        <img src="https://img.shields.io/github/last-commit/averycrespi/vtt-bridge/master" alt="Last commit badge">
-    </a>
-    <a href="https://github.com/averycrespi/vtt-bridge/issues">
-        <img src="https://img.shields.io/github/issues/averycrespi/vtt-bridge" alt="Issues badge">
-    </a>
-    <a href="https://github.com/averycrespi/vtt-bridge/blob/master/LICENSE">
-        <img src="https://img.shields.io/github/license/averycrespi/vtt-bridge" alt="License badge">
+    <a href="https://github.com/codeGlaze/vtt-bridge/blob/main/LICENSE">
+        <img src="https://img.shields.io/github/license/codeGlaze/vtt-bridge" alt="License badge">
     </a>
 </div>
 
@@ -80,15 +59,9 @@ The use of this tool is meant for use for your own campaigns. It is only meant a
 
 ## Getting Started
 
-**Install the extension** for [Mozilla Firefox](https://addons.mozilla.org/en-CA/firefox/addon/vtt-bridge/) or [Google Chrome](https://chrome.google.com/webstore/detail/vtt-bridge/fadncbccmelchegmlghbhpjchdmghmhh):
+Store listings for both browsers are being re-established under VTT Bridge's new home (see [Project Status](#project-status) below). Until then, install the extension from source -- see [DEVELOPERS.md](DEVELOPERS.md) for instructions -- or grab a pre-built zip from the project's [CI runs](https://github.com/codeGlaze/vtt-bridge/actions/workflows/ci.yml) or [Releases](https://github.com/codeGlaze/vtt-bridge/releases).
 
-<a href="https://addons.mozilla.org/en-CA/firefox/addon/vtt-bridge/">
-    <img src="assets/firefox.png" alt="Firefox logo">
-</a>
-
-<a href="https://chrome.google.com/webstore/detail/vtt-bridge/fadncbccmelchegmlghbhpjchdmghmhh">
-    <img src="assets/chrome.png" alt="Chrome logo">
-</a>
+Once installed:
 
 **Open your Dungeon Master's Vault character sheet** and click the <kbd>www</kbd> link in the top right.
 
@@ -100,23 +73,22 @@ The use of this tool is meant for use for your own campaigns. It is only meant a
 
 **Click a button** on your Dungeon Master's Vault character sheet. Your roll will appear in Roll20!
 
+The extension also works against [dev.dungeonmastersvault.com](https://dev.dungeonmastersvault.com/), DMV's beta site, if you want to test it against upcoming DMV releases before they go live.
+
 ## Project Status
 
-VTT Bridge is in maintenance mode, which means that I don't plan to add any new features.
+VTT Bridge has been adopted into the OrcPub / Dungeon Master's Vault family of projects and modernized: it now runs on Manifest V3 and works on current versions of Chrome and Firefox (v2.0.0).
 
-However, I will continue to release updates for the following reasons:
-- To upgrade dependencies and fix security issues
-- To maintain compatibility with the latest versions of Dungeon Master's Vault and Roll20
+Store listings under the project's new home are being re-established -- see [Getting Started](#getting-started) for how to install in the meantime.
 
 ## Support
 
-- For answers to common questions, check the [FAQ](https://github.com/averycrespi/vtt-bridge/wiki/FAQ).
-- For development information, check the [project wiki](https://github.com/averycrespi/vtt-bridge/wiki).
-- To see if a problem has already been reported, check the [issues tab](https://github.com/averycrespi/vtt-bridge/issues).
-- To ask for help or give feedback, join the `#vtt-bridge` channel on the [DMV Discord server](https://discord.gg/FM2RED77gK).
+- To ask for help or give feedback, join the `#vtt-bridge` channel on the [DMV Discord server](https://discord.gg/uv5vXhk).
+- To see if a problem has already been reported, or to report a new one, check the [issues tab](https://github.com/codeGlaze/vtt-bridge/issues).
 
 ## Credits
 
+- Created by [Avery Crespi](https://github.com/averycrespi), the original author.
 - Project inspired by [VTT Enhancement Suite](https://ssstormy.github.io/roll20-enhancement-suite/).
 - Logo derived from [dragon by BGBOXXX Design](https://thenounproject.com/term/dragon/1646665/) from the Noun Project.
 
