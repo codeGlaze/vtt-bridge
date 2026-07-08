@@ -73,6 +73,19 @@ Repeat the checklist in **both** browsers.
 - [ ] Post several rolls in a row over a few minutes (lets Chrome's service
       worker idle-terminate between rolls; deliveries must still arrive).
 
+### Owlbear Rodeo tap
+
+Needs a free Owlbear Rodeo account and the room extension installed (add the
+hosted `manifest.json` URL to the room — see `docs/OWLBEAR.md`).
+
+- [ ] Open an OBR room with the room extension added → connected toast on the
+      OBR tab; no "room extension not detected" warning.
+- [ ] Skill roll from DMV → notification in the OBR room with formula, dice,
+      and total (e.g. `1d20+5 → [14] +5 = 19`).
+- [ ] Second browser/player in the same room sees the broadcast notification.
+- [ ] Hidden mode (eye toggle) → roll shows only for the roller and the GM.
+- [ ] Cast a spell / use a feature → description-only notification.
+
 ## If something breaks
 
 Note which checklist item failed, the browser, Jumpgate vs legacy, and copy
