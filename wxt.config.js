@@ -16,10 +16,16 @@ export default defineConfig({
         ? {
             gecko: {
               id: "vtt-bridge@dungeonmastersvault.com",
-              strict_min_version: "115.0",
+              // Firefox 140 (ESR, mid-2025) is the oldest version that understands
+              // data_collection_permissions below; storage.session needs only 115.
+              strict_min_version: "140.0",
               // AMO requires this declaration for new submissions since Nov 2025.
               // VTT Bridge does not collect, store, or transmit any data.
               data_collection_permissions: { required: ["none"] },
+            },
+            // Firefox for Android gained data_collection_permissions support in 142.
+            gecko_android: {
+              strict_min_version: "142.0",
             },
           }
         : undefined,

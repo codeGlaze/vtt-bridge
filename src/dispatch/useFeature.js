@@ -1,21 +1,30 @@
 import { STORE_CLICK, STORE_ERROR } from "../store";
 import { classes, onElementLoad } from "../common";
+import { DMV } from "@/selectors";
 import { isValidDescription, isValidName } from "../transform/validate";
 
 export const addUseFeatureListeners = (store) => {
-  onElementLoad(".actions p span", () => ready(store, ".actions"));
-  onElementLoad(".bonusActions p span", () => ready(store, ".bonusActions"));
-  onElementLoad(".features\\,Traits\\,AndFeats p span", () => ready(store, ".features\\,Traits\\,AndFeats"));
-  onElementLoad(".reactions p span", () => ready(store, ".reactions"));
+  onElementLoad(`${DMV.actionsSection} ${DMV.paragraph} ${DMV.featureEntrySpans}`, () =>
+    ready(store, DMV.actionsSection),
+  );
+  onElementLoad(`${DMV.bonusActionsSection} ${DMV.paragraph} ${DMV.featureEntrySpans}`, () =>
+    ready(store, DMV.bonusActionsSection),
+  );
+  onElementLoad(`${DMV.featuresTraitsAndFeatsSection} ${DMV.paragraph} ${DMV.featureEntrySpans}`, () =>
+    ready(store, DMV.featuresTraitsAndFeatsSection),
+  );
+  onElementLoad(`${DMV.reactionsSection} ${DMV.paragraph} ${DMV.featureEntrySpans}`, () =>
+    ready(store, DMV.reactionsSection),
+  );
 };
 
 const ready = (store, selector) => {
   const className = classes.useFeature;
-  const children = document.querySelector(selector).querySelectorAll("p");
+  const children = document.querySelector(selector).querySelectorAll(DMV.paragraph);
 
   for (const child of children) {
     // There may be more spans, but we don't care about them.
-    const [featureSpan, detailsSpan, ,] = child.querySelectorAll("span");
+    const [featureSpan, detailsSpan, ,] = child.querySelectorAll(DMV.featureEntrySpans);
 
     const name = featureSpan.innerText;
     if (!isValidName(name)) {

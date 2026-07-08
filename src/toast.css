@@ -1,0 +1,120 @@
+@keyframes vtt-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes vtt-toast-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.vtt-toast-container {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+  padding: 20px;
+  pointer-events: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.vtt-toast-container--bottom-right {
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.vtt-toast-container--bottom-left {
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.vtt-toast {
+  display: flex;
+  align-items: center;
+  max-width: 300px;
+  box-sizing: border-box;
+  padding: 14px 15px;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.25);
+  pointer-events: auto;
+  animation: vtt-toast-in 0.3s ease-in forwards;
+}
+
+.vtt-toast--disappear {
+  animation: vtt-toast-out 0.3s ease-in forwards;
+}
+
+.vtt-toast--success {
+  background-color: #3dc763;
+}
+
+.vtt-toast--error {
+  background-color: #ed3d3d;
+}
+
+.vtt-toast--visible {
+  background-color: #aa7a21;
+}
+
+.vtt-toast--hidden {
+  background-color: #6591a5;
+}
+
+.vtt-toast-icon {
+  flex-shrink: 0;
+  display: flex;
+  margin-right: 12px;
+}
+
+.vtt-toast-icon-svg {
+  display: block;
+}
+
+.vtt-toast-message {
+  flex-grow: 1;
+  word-break: break-word;
+}
+
+.vtt-toast-dismiss {
+  flex-shrink: 0;
+  margin-left: 12px;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  padding: 0;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.vtt-toast-dismiss:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.vtt-toast-dismiss:active {
+  opacity: 0.8;
+}

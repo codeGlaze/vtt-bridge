@@ -1,42 +1,43 @@
-import "notyf/notyf.min.css";
-
-import { Notyf } from "notyf";
 import { browser } from "wxt/browser";
 
-const successNotyf = new Notyf();
-const errorNotyf = new Notyf();
-const visibilityNotyf = new Notyf({
-  position: { x: "left", y: "bottom" },
-  types: [
-    { type: "visible", background: "#aa7a21", icon: { className: "fa fa-eye", color: "#ffffff" } },
-    { type: "hidden", background: "#6591a5", icon: { className: "fa fa-eye-slash", color: "#ffffff" } },
-  ],
-});
+import { buildEyeIcon, buildEyeSlashIcon, createToaster } from "./toast";
+
+const successToaster = createToaster({ position: "bottom-right" });
+const errorToaster = createToaster({ position: "bottom-right" });
+const visibilityToaster = createToaster({ position: "bottom-left" });
 
 export const showConnected = () =>
-  successNotyf.success({
+  successToaster.show({
     message: "Connected to VTT Bridge v" + browser.runtime.getManifest().version + "!",
+    type: "success",
     duration: 0,
     dismissible: true,
   });
 
 export const showToast = (toast) => {
-  successNotyf.dismissAll();
-  successNotyf.success(toast);
+  successToaster.dismissAll();
+  successToaster.show({ message: toast, type: "success" });
 };
 
 let visibilityToast;
 export const showVisibility = (visible) => {
-  visibilityNotyf.dismiss(visibilityToast);
+  visibilityToaster.dismiss(visibilityToast);
   const type = visible ? "visible" : "hidden";
-  visibilityToast = visibilityNotyf.open({
+  visibilityToast = visibilityToaster.show({
     type,
     message: `Commands are ${type}!`,
     duration: 0,
     dismissible: true,
+    icon: visible ? buildEyeIcon : buildEyeSlashIcon,
   });
 };
 
 export const showError = (error) => {
-  errorNotyf.error({ message: error, duration: 0, dismissible: true }).on("dismiss", () => errorNotyf.dismissAll());
+  errorToaster.show({
+    message: error,
+    type: "error",
+    duration: 0,
+    dismissible: true,
+    onDismiss: () => errorToaster.dismissAll(),
+  });
 };

@@ -1,13 +1,14 @@
 import { STORE_CLICK, STORE_ERROR } from "../store";
 import { classes, onElementLoad } from "../common";
+import { DMV } from "@/selectors";
 
 import { isValidMod } from "../transform/validate";
 
-export const addRollAbilityScoreListeners = (store) => onElementLoad(".ability-scores", () => ready(store));
+export const addRollAbilityScoreListeners = (store) => onElementLoad(DMV.abilityScores, () => ready(store));
 
 const ready = (store) => {
   const className = classes.rollAbilityScore;
-  const buttons = document.querySelectorAll(".ability-scores .roll-button");
+  const buttons = document.querySelectorAll(DMV.abilityScoreRollButtons);
 
   // Brittle: manually set ability score names.
   const names = ["STR", "DEX", "CON", "INT", "WIS", "CHA"];

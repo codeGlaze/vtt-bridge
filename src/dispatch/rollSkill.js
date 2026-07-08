@@ -1,22 +1,23 @@
 import { STORE_CLICK, STORE_ERROR } from "../store";
 import { classes, onElementLoad } from "../common";
+import { DMV } from "@/selectors";
 import { isValidMod, isValidName } from "../transform/validate";
 
-export const addRollSkillListeners = (store) => onElementLoad(".skills", () => ready(store));
+export const addRollSkillListeners = (store) => onElementLoad(DMV.skills, () => ready(store));
 
 const ready = (store) => {
-  const rows = document.querySelector(".skills").querySelectorAll("tr");
+  const rows = document.querySelector(DMV.skills).querySelectorAll(DMV.tableRow);
 
   for (const row of rows) {
     const className = classes.rollSkill;
 
-    const name = row.querySelector(".skill-name").innerText;
+    const name = row.querySelector(DMV.skillName).innerText;
     if (!isValidName(name)) {
       store.dispatch(STORE_ERROR, { name: "skill", property: "name", value: name });
       continue;
     }
 
-    const button = row.querySelector(".roll-button");
+    const button = row.querySelector(DMV.rollButton);
 
     const mod = button.innerText;
     if (!isValidMod(mod)) {

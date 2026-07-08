@@ -1,16 +1,17 @@
 import { STORE_CLICK, STORE_ERROR } from "../store";
 import { classes, onElementLoad } from "../common";
+import { DMV } from "@/selectors";
 
 import { isValidMod } from "../transform/validate";
 
-export const addRollInitiativeListeners = (store) => onElementLoad(".initiative", () => ready(store));
+export const addRollInitiativeListeners = (store) => onElementLoad(DMV.initiative, () => ready(store));
 
 const ready = (store) => {
   const className = classes.rollInitiative;
   const name = "initiative";
 
-  const parent = document.querySelector(".initiative");
-  const button = parent.querySelector(".roll-button");
+  const parent = document.querySelector(DMV.initiative);
+  const button = parent.querySelector(DMV.rollButton);
 
   const mod = button.innerText;
   if (!isValidMod(mod)) {

@@ -1,4 +1,5 @@
 import { onChildLoad, onElementLoad } from "../common";
+import { DMV } from "@/selectors";
 
 import { addExpandSpellListeners } from "./expandSpell";
 import { addRollInitiativeListeners } from "./rollInitiative";
@@ -12,17 +13,16 @@ let activeTab = -1;
 
 // Brittle: wait for any tab to load.
 // We need the ".w-50-p" to exclude banner ads.
-export const addSelectTabListeners = (store) => onElementLoad(".w-50-p .flex-grow-1.t-a-c", () => ready(store));
+export const addSelectTabListeners = (store) => onElementLoad(DMV.tabs, () => ready(store));
 
 const ready = (store) => {
   // Find all 5 tabs. A tab is not done loading until it has an orange bar as its child.
-  const [combatTab, proficienciesTab, spellsTab, featuresTab, equipmentTab] =
-    document.querySelectorAll(".w-50-p .flex-grow-1.t-a-c");
+  const [combatTab, proficienciesTab, spellsTab, featuresTab, equipmentTab] = document.querySelectorAll(DMV.tabs);
 
   combatTab.addEventListener("click", () => {
     console.debug("Selected combat tab");
     if (activeTab !== 0) {
-      onChildLoad(combatTab, ".b-orange", () => {
+      onChildLoad(combatTab, DMV.tabActiveIndicator, () => {
         addRollInitiativeListeners(store);
         addWeaponListeners(store);
       });
@@ -36,7 +36,7 @@ const ready = (store) => {
   proficienciesTab.addEventListener("click", () => {
     console.debug("Selected proficiencies tab");
     if (activeTab !== 1) {
-      onChildLoad(proficienciesTab, ".b-orange", () => addRollProficiencyListeners(store));
+      onChildLoad(proficienciesTab, DMV.tabActiveIndicator, () => addRollProficiencyListeners(store));
     }
     activeTab = 1;
   });
@@ -44,7 +44,7 @@ const ready = (store) => {
   spellsTab.addEventListener("click", () => {
     console.debug("Selected spells tab");
     if (activeTab !== 2) {
-      onChildLoad(spellsTab, ".b-orange", () => {
+      onChildLoad(spellsTab, DMV.tabActiveIndicator, () => {
         addRollSpellListeners(store);
         addExpandSpellListeners(store);
       });
@@ -55,7 +55,7 @@ const ready = (store) => {
   featuresTab.addEventListener("click", () => {
     console.debug("Selected features tab");
     if (activeTab !== 3) {
-      onChildLoad(featuresTab, ".b-orange", () => addUseFeatureListeners(store));
+      onChildLoad(featuresTab, DMV.tabActiveIndicator, () => addUseFeatureListeners(store));
     }
     activeTab = 3;
   });
@@ -63,7 +63,7 @@ const ready = (store) => {
   equipmentTab.addEventListener("click", () => {
     console.debug("Selected equipment tab");
     if (activeTab !== 4) {
-      onChildLoad(equipmentTab, ".b-orange", () => addWeaponListeners(store));
+      onChildLoad(equipmentTab, DMV.tabActiveIndicator, () => addWeaponListeners(store));
     }
     activeTab = 4;
   });

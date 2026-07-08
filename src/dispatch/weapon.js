@@ -1,27 +1,28 @@
 import { STORE_CLICK, STORE_ERROR } from "../store";
 import { classes, onElementLoad } from "../common";
+import { DMV } from "@/selectors";
 import { isValidAttack, isValidDamage, isValidName } from "../transform/validate";
 
 // Brittle: wait for any roll button to load.
-export const addWeaponListeners = (store) => onElementLoad(".weapons .weapon .roll-button", () => ready(store));
+export const addWeaponListeners = (store) => onElementLoad(DMV.weaponRollButtonAnchor, () => ready(store));
 
 const ready = (store) => {
-  const rows = document.querySelector(".weapons").querySelectorAll("tr");
+  const rows = document.querySelector(DMV.weapons).querySelectorAll(DMV.tableRow);
 
   for (const row of rows) {
     // Skip table headers.
-    if (row.querySelectorAll("th").length > 0) {
+    if (row.querySelectorAll(DMV.tableHeaderCell).length > 0) {
       continue;
     }
 
-    const cells = Array.from(row.querySelectorAll("td"));
+    const cells = Array.from(row.querySelectorAll(DMV.tableCell));
     const name = cells[0].innerText;
     if (!isValidName(name)) {
       store.dispatch(STORE_ERROR, { name: "weapon", property: "name", value: name });
       continue;
     }
 
-    const [attackButton, ...damageButtons] = row.querySelectorAll(".roll-button");
+    const [attackButton, ...damageButtons] = row.querySelectorAll(DMV.rollButton);
 
     const attack = attackButton.innerText;
     if (!isValidAttack(attack)) {

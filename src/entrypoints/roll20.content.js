@@ -2,6 +2,7 @@ import { browser } from "wxt/browser";
 import { defineContentScript } from "wxt/utils/define-content-script";
 
 import { messageType, onElementLoad } from "@/common";
+import { ROLL20 } from "@/selectors";
 import { showConnected } from "@/notify";
 
 /**
@@ -9,19 +10,19 @@ import { showConnected } from "@/notify";
  * references go stale. Re-query on every send instead of caching.
  */
 const runCommands = (commands) => {
-  const input = document.querySelector("#textchat-input");
+  const input = document.querySelector(ROLL20.chatInput);
   if (!input) {
     console.warn("Roll20 chat input not found, dropping commands");
     return;
   }
 
-  const textarea = input.querySelector("textarea");
+  const textarea = input.querySelector(ROLL20.chatTextarea);
   if (!textarea) {
     console.warn("Roll20 chat textarea not found, dropping commands");
     return;
   }
 
-  const button = input.querySelector("button") ?? input.querySelector(".btn");
+  const button = input.querySelector(ROLL20.chatSendButton) ?? input.querySelector(ROLL20.chatSendButtonFallback);
   if (!button) {
     console.warn("Roll20 chat send button not found, dropping commands");
     return;
@@ -46,7 +47,7 @@ export default defineContentScript({
       }
     });
 
-    onElementLoad("#textchat-input", () => {
+    onElementLoad(ROLL20.chatInput, () => {
       showConnected();
       browser.runtime.sendMessage({ type: messageType.ready });
     });

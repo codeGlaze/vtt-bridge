@@ -1,13 +1,14 @@
 import { classes, onElementLoad } from "../common";
+import { DMV } from "@/selectors";
 
 import { STORE_VISIBILITY } from "../store";
 
-export const addToggleVisibilityListeners = (store) => onElementLoad(".character-summary", () => ready(store));
+export const addToggleVisibilityListeners = (store) => onElementLoad(DMV.characterSummary, () => ready(store));
 
 const ready = (store) => {
   let visible = true;
 
-  const summary = document.querySelector(".character-summary");
+  const summary = document.querySelector(DMV.characterSummary);
 
   const button = document.createElement("button");
   button.classList.add("form-button", "m-l-10", "h-40", classes.toggleVisibility);

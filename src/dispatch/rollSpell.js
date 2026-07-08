@@ -1,23 +1,24 @@
 import { STORE_CLICK, STORE_ERROR } from "../store";
 import { classes, onElementLoad } from "../common";
+import { DMV } from "@/selectors";
 import { isValidAttack, isValidName } from "../transform/validate";
 
 // Brittle: wait for any spell row to load.
-export const addRollSpellListeners = (store) => onElementLoad(".details-columns tr.spell", () => ready(store));
+export const addRollSpellListeners = (store) => onElementLoad(DMV.spellRowAnchor, () => ready(store));
 
 const ready = (store) => {
   const className = classes.attackWithSpell;
-  const rows = document.querySelector(".details-columns").querySelectorAll("tr.spell");
+  const rows = document.querySelector(DMV.detailsColumns).querySelectorAll(DMV.spellRow);
 
   for (const row of rows) {
-    const cells = Array.from(row.querySelectorAll("td"));
+    const cells = Array.from(row.querySelectorAll(DMV.tableCell));
     const name = cells[0].innerText;
     if (!isValidName(name)) {
       store.dispatch(STORE_ERROR, { name: "spell", property: "name", value: name });
       continue;
     }
 
-    const button = row.querySelector(".roll-button");
+    const button = row.querySelector(DMV.rollButton);
 
     const attack = button.innerText;
     if (!isValidAttack(attack)) {
