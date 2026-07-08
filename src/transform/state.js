@@ -41,6 +41,36 @@ export const intentKinds = {
  * @property {boolean} visible - whether the roll should be shown to all players.
  */
 
+/**
+ * @typedef {Object} ClickData
+ * @property {string} [name]
+ * @property {string} [mod]
+ * @property {string} [description]
+ * @property {string} [attack]
+ * @property {string} [damage]
+ */
+
+/**
+ * @typedef {Object} Click
+ * @property {string} className - one of {@link import("../common").classes}.
+ * @property {{ ctrlKey?: boolean, shiftKey?: boolean }} [event]
+ * @property {ClickData} data
+ */
+
+/**
+ * @typedef {Object} DmvState
+ * @property {Click} click
+ * @property {boolean} visible
+ * @property {string} character
+ */
+
+/**
+ * Turn the DMV-side store state (produced by a roll-button click) into a
+ * user-facing toast string and a VTT-agnostic {@link RollIntent}.
+ *
+ * @param {DmvState} state
+ * @returns {{ toast: string, intent: RollIntent }}
+ */
 export const parseState = (state) => {
   const { click, visible, character } = state;
   const { className, event, data } = click;

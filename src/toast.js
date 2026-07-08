@@ -11,6 +11,11 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 // Matches notyf's default auto-dismiss duration.
 const DEFAULT_DURATION = 2000;
 
+/**
+ * @param {string} tagName
+ * @param {Record<string, string>} attributes
+ * @returns {SVGElement}
+ */
 const createSvgElement = (tagName, attributes) => {
   const element = document.createElementNS(SVG_NS, tagName);
   for (const [name, value] of Object.entries(attributes)) {
@@ -19,6 +24,10 @@ const createSvgElement = (tagName, attributes) => {
   return element;
 };
 
+/**
+ * @param {SVGElement[]} paths
+ * @returns {SVGElement}
+ */
 const createIconSvg = (paths) => {
   const svg = createSvgElement("svg", {
     viewBox: "0 0 24 24",
@@ -59,18 +68,45 @@ export const buildEyeSlashIcon = () =>
   ]);
 
 /**
+ * @typedef {Object} ToastOptions
+ * @property {string} [message]
+ * @property {string} [type]
+ * @property {number} [duration]
+ * @property {boolean} [dismissible]
+ * @property {() => void} [onDismiss]
+ * @property {() => SVGElement} [icon]
+ */
+
+/**
+ * @typedef {Object} ToastHandle
+ * @property {() => void} remove
+ */
+
+/**
  * Creates an independent toast stack anchored to a corner of the screen.
  *
  * `show()` returns a handle that can be passed to `dismiss()`, or ignored;
  * `dismissAll()` removes every toast currently tracked by this toaster.
+ *
+ * @param {{ position?: string }} [options]
+ * @returns {{
+ *   show: (options: ToastOptions) => ToastHandle,
+ *   dismiss: (handle?: ToastHandle) => void,
+ *   dismissAll: () => void,
+ * }}
  */
 export const createToaster = ({ position = "bottom-right" } = {}) => {
   const container = document.createElement("div");
   container.classList.add("vtt-toast-container", `vtt-toast-container--${position}`);
   document.body.appendChild(container);
 
+  /** @type {Set<ToastHandle>} */
   const active = new Set();
 
+  /**
+   * @param {ToastOptions} options
+   * @returns {ToastHandle}
+   */
   const show = ({ message, type = "success", duration = DEFAULT_DURATION, dismissible = false, onDismiss, icon }) => {
     const toast = document.createElement("div");
     toast.classList.add("vtt-toast", `vtt-toast--${type}`);
@@ -87,7 +123,7 @@ export const createToaster = ({ position = "bottom-right" } = {}) => {
     messageElement.textContent = message ?? "";
     toast.appendChild(messageElement);
 
-    const handle = {};
+    const handle = /** @type {ToastHandle} */ ({});
     let dismissed = false;
     handle.remove = () => {
       if (dismissed) {
@@ -123,6 +159,7 @@ export const createToaster = ({ position = "bottom-right" } = {}) => {
     return handle;
   };
 
+  /** @param {ToastHandle} [handle] */
   const dismiss = (handle) => handle?.remove();
 
   const dismissAll = () => {

@@ -1,3 +1,15 @@
+/**
+ * @typedef {Object} RollOptions
+ * @property {boolean} [hasAdvantage]
+ * @property {boolean} [hasDisadvantage]
+ * @property {boolean} visible
+ */
+
+/**
+ * @param {string} mod
+ * @param {RollOptions} options
+ * @returns {string}
+ */
 export const makeD20Roll = (mod, { hasAdvantage, hasDisadvantage, visible }) => {
   const prefix = visible ? "/roll " : "/gmroll ";
   const suffix = mod === "0" ? "" : mod;
@@ -10,16 +22,31 @@ export const makeD20Roll = (mod, { hasAdvantage, hasDisadvantage, visible }) => 
   }
 };
 
+/**
+ * @param {string} damage
+ * @param {RollOptions} options
+ * @returns {string}
+ */
 export const makeDamageRoll = (damage, { visible }) => {
   const prefix = visible ? "/roll " : "/gmroll ";
   return prefix + damage;
 };
 
+/**
+ * @param {string} description
+ * @param {RollOptions} options
+ * @returns {string}
+ */
 export const makeDescription = (description, { visible }) => {
   const prefix = visible ? "" : "/w gm ";
   return prefix + description.replace(/\n/g, "\n" + prefix);
 };
 
+/**
+ * @param {string} text
+ * @param {RollOptions} options
+ * @returns {string}
+ */
 export const makeEmote = (text, { hasAdvantage, hasDisadvantage, visible }) => {
   const prefix = visible ? "/em : " : "/w gm ";
   if (hasAdvantage) {
@@ -31,6 +58,11 @@ export const makeEmote = (text, { hasAdvantage, hasDisadvantage, visible }) => {
   }
 };
 
+/**
+ * @param {string} attack
+ * @param {RollOptions} options
+ * @returns {string}
+ */
 export const makeWeaponAttack = (attack, { hasAdvantage, hasDisadvantage, visible }) => {
   const prefix = visible ? "/roll " : "/gmroll ";
   if (hasAdvantage || hasDisadvantage) {

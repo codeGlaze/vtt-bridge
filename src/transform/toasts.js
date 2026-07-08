@@ -1,3 +1,8 @@
+/**
+ * @param {string} text
+ * @param {import("./commands").RollOptions} options
+ * @returns {string}
+ */
 export const makeToast = (text, { hasAdvantage, hasDisadvantage, visible }) => {
   let suffix = "!";
   if (hasAdvantage) {

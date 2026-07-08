@@ -14,12 +14,15 @@ export const showConnected = () =>
     dismissible: true,
   });
 
+/** @param {string} toast */
 export const showToast = (toast) => {
   successToaster.dismissAll();
   successToaster.show({ message: toast, type: "success" });
 };
 
+/** @type {import("./toast").ToastHandle | undefined} */
 let visibilityToast;
+/** @param {boolean} visible */
 export const showVisibility = (visible) => {
   visibilityToaster.dismiss(visibilityToast);
   const type = visible ? "visible" : "hidden";
@@ -32,6 +35,7 @@ export const showVisibility = (visible) => {
   });
 };
 
+/** @param {string} error */
 export const showError = (error) => {
   errorToaster.show({
     message: error,

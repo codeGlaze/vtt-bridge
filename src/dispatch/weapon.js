@@ -7,7 +7,7 @@ import { isValidAttack, isValidDamage, isValidName } from "../transform/validate
 export const addWeaponListeners = (store) => onElementLoad(DMV.weaponRollButtonAnchor, () => ready(store));
 
 const ready = (store) => {
-  const rows = document.querySelector(DMV.weapons).querySelectorAll(DMV.tableRow);
+  const rows = /** @type {HTMLElement} */ (document.querySelector(DMV.weapons)).querySelectorAll(DMV.tableRow);
 
   for (const row of rows) {
     // Skip table headers.
@@ -15,14 +15,16 @@ const ready = (store) => {
       continue;
     }
 
-    const cells = Array.from(row.querySelectorAll(DMV.tableCell));
+    const cells = /** @type {HTMLElement[]} */ (Array.from(row.querySelectorAll(DMV.tableCell)));
     const name = cells[0].innerText;
     if (!isValidName(name)) {
       store.dispatch(STORE_ERROR, { name: "weapon", property: "name", value: name });
       continue;
     }
 
-    const [attackButton, ...damageButtons] = row.querySelectorAll(DMV.rollButton);
+    const [attackButton, ...damageButtons] = /** @type {NodeListOf<HTMLElement>} */ (
+      row.querySelectorAll(DMV.rollButton)
+    );
 
     const attack = attackButton.innerText;
     if (!isValidAttack(attack)) {

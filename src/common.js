@@ -15,12 +15,23 @@ export const classes = {
 export const messageType = { enqueue: 0, clear: 1, ready: 2, run: 3 };
 
 /**
+ * @typedef {(typeof messageType)[keyof typeof messageType]} MessageType
+ */
+
+/**
  * Run a callback after an element loads.
+ *
+ * @param {string} selector
+ * @param {() => void} callback
  */
 export const onElementLoad = (selector, callback) => onPredicate(() => !!document.querySelector(selector), callback);
 
 /**
  * Run a callback after an element's child loads.
+ *
+ * @param {Element} element
+ * @param {string} selector
+ * @param {() => void} callback
  */
 export const onChildLoad = (element, selector, callback) =>
   onPredicate(() => !!element.querySelector(selector), callback);
@@ -29,6 +40,11 @@ export const onChildLoad = (element, selector, callback) =>
  * Run a callback after a predicate is satisfied.
  *
  * Uses exponential backoff with limited attempts.
+ *
+ * @param {() => boolean} predicate
+ * @param {() => void} callback
+ * @param {number} [attempts]
+ * @param {number} [timeout]
  */
 const onPredicate = (predicate, callback, attempts = 10, timeout = 100) => {
   if (predicate()) {

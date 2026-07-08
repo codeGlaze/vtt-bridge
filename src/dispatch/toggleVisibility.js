@@ -8,7 +8,7 @@ export const addToggleVisibilityListeners = (store) => onElementLoad(DMV.charact
 const ready = (store) => {
   let visible = true;
 
-  const summary = document.querySelector(DMV.characterSummary);
+  const summary = /** @type {HTMLElement} */ (document.querySelector(DMV.characterSummary));
 
   const button = document.createElement("button");
   button.classList.add("form-button", "m-l-10", "h-40", classes.toggleVisibility);

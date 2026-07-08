@@ -7,9 +7,16 @@ import { intentKinds } from "./state";
  * Roll20 chat command string(s) it represents. This is the only place that
  * knows about Roll20 chat syntax; a future second VTT would get its own
  * sink module implementing the same `renderIntents` shape.
+ *
+ * @param {import("./state").RollIntent} intent
+ * @returns {string[]}
  */
 const renderIntent = (intent) => {
-  const { kind, character, name, mod, damage, attack, description, advantage, disadvantage, visible } = intent;
+  // Only the fields relevant to `kind` are ever populated (see RollIntent);
+  // cast the rest to non-optional so each switch case below can use them
+  // directly, exactly as `parseState` guarantees for that `kind`.
+  const { kind, character, name, mod, damage, attack, description, advantage, disadvantage, visible } =
+    /** @type {Required<import("./state").RollIntent>} */ (intent);
   const options = { hasAdvantage: advantage, hasDisadvantage: disadvantage, visible };
 
   switch (kind) {
@@ -41,5 +48,8 @@ const renderIntent = (intent) => {
 /**
  * Render a list of intents (in delivery order) into the flat list of Roll20
  * chat command strings they produce.
+ *
+ * @param {import("./state").RollIntent[]} intents
+ * @returns {string[]}
  */
 export const renderIntents = (intents) => intents.flatMap(renderIntent);

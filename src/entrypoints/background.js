@@ -6,12 +6,21 @@ import { messageType } from "@/common";
 const QUEUE_KEY = "intentQueue";
 const TABS_KEY = "roll20Tabs";
 
-const getQueue = async () => (await browser.storage.session.get(QUEUE_KEY))[QUEUE_KEY] ?? [];
+/** @typedef {import("@/transform/state").RollIntent} RollIntent */
+
+/** @returns {Promise<RollIntent[]>} */
+const getQueue = async () =>
+  /** @type {RollIntent[] | undefined} */ ((await browser.storage.session.get(QUEUE_KEY))[QUEUE_KEY]) ?? [];
+/** @param {RollIntent[]} queue */
 const setQueue = (queue) => browser.storage.session.set({ [QUEUE_KEY]: queue });
 
-const getTabs = async () => (await browser.storage.session.get(TABS_KEY))[TABS_KEY] ?? [];
+/** @returns {Promise<number[]>} */
+const getTabs = async () =>
+  /** @type {number[] | undefined} */ ((await browser.storage.session.get(TABS_KEY))[TABS_KEY]) ?? [];
+/** @param {number[]} tabs */
 const setTabs = (tabs) => browser.storage.session.set({ [TABS_KEY]: tabs });
 
+/** @param {number} [tabId] */
 const addTab = async (tabId) => {
   if (tabId == null) {
     return;
@@ -22,6 +31,7 @@ const addTab = async (tabId) => {
   }
 };
 
+/** @param {number} [tabId] */
 const removeTab = async (tabId) => {
   const tabs = await getTabs();
   await setTabs(tabs.filter((id) => id !== tabId));
@@ -33,9 +43,13 @@ const removeTab = async (tabId) => {
  * Tabs that fail to receive the message (e.g. because they were closed) are
  * dropped from the registry. Returns whether at least one tab received the
  * intents.
+ *
+ * @param {RollIntent[]} intents
+ * @returns {Promise<boolean>}
  */
 const deliver = async (intents) => {
   const tabs = await getTabs();
+  /** @type {number[]} */
   const stale = [];
   let delivered = false;
 
@@ -57,6 +71,7 @@ const deliver = async (intents) => {
   return delivered;
 };
 
+/** @param {RollIntent[]} intents */
 const handleEnqueue = async (intents) => {
   const delivered = await deliver(intents);
   if (!delivered) {
@@ -65,6 +80,7 @@ const handleEnqueue = async (intents) => {
   }
 };
 
+/** @param {number} [tabId] */
 const handleReady = async (tabId) => {
   await addTab(tabId);
   // Preserve the old behavior: connecting to Roll20 clears any stale queue.

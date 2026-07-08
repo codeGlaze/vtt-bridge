@@ -8,7 +8,7 @@ export const addRollAbilityScoreListeners = (store) => onElementLoad(DMV.ability
 
 const ready = (store) => {
   const className = classes.rollAbilityScore;
-  const buttons = document.querySelectorAll(DMV.abilityScoreRollButtons);
+  const buttons = /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll(DMV.abilityScoreRollButtons));
 
   // Brittle: manually set ability score names.
   const names = ["STR", "DEX", "CON", "INT", "WIS", "CHA"];

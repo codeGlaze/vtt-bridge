@@ -10,8 +10,8 @@ const ready = (store) => {
   const className = classes.rollInitiative;
   const name = "initiative";
 
-  const parent = document.querySelector(DMV.initiative);
-  const button = parent.querySelector(DMV.rollButton);
+  const parent = /** @type {HTMLElement} */ (document.querySelector(DMV.initiative));
+  const button = /** @type {HTMLElement} */ (parent.querySelector(DMV.rollButton));
 
   const mod = button.innerText;
   if (!isValidMod(mod)) {

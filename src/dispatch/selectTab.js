@@ -17,7 +17,9 @@ export const addSelectTabListeners = (store) => onElementLoad(DMV.tabs, () => re
 
 const ready = (store) => {
   // Find all 5 tabs. A tab is not done loading until it has an orange bar as its child.
-  const [combatTab, proficienciesTab, spellsTab, featuresTab, equipmentTab] = document.querySelectorAll(DMV.tabs);
+  const [combatTab, proficienciesTab, spellsTab, featuresTab, equipmentTab] = /** @type {NodeListOf<HTMLElement>} */ (
+    document.querySelectorAll(DMV.tabs)
+  );
 
   combatTab.addEventListener("click", () => {
     console.debug("Selected combat tab");

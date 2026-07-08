@@ -8,27 +8,31 @@ export const addExpandSpellListeners = (store) => onElementLoad(DMV.spellRowAnch
 
 const ready = (store) => {
   const className = classes.castSpell;
-  let pointers = document.querySelector(DMV.detailsColumns).querySelectorAll(DMV.spellPointer);
+  let pointers = /** @type {HTMLElement} */ (document.querySelector(DMV.detailsColumns)).querySelectorAll(
+    DMV.spellPointer,
+  );
 
   for (const pointer of pointers) {
     pointer.addEventListener("click", function () {
       // Brittle: wait for any form button in a cell to load.
       onElementLoad(DMV.spellFormButton, () => {
-        const button = document.querySelector(DMV.spellFormButton);
+        const button = /** @type {HTMLElement} */ (document.querySelector(DMV.spellFormButton));
         button.classList.remove("form-button"); // Avoid matching this button again.
         button.classList.add("roll-button", className);
         button.innerText = "CAST SPELL";
 
         // Brittle: search backwards to find the spell name.
-        const prevRow = button.closest(DMV.tableRow).previousSibling;
-        const name = prevRow.firstChild.innerText;
+        const prevRow = /** @type {HTMLElement} */ (
+          /** @type {HTMLElement} */ (button.closest(DMV.tableRow)).previousSibling
+        );
+        const name = /** @type {HTMLElement} */ (prevRow.firstChild).innerText;
         if (!isValidName(name)) {
           store.dispatch(STORE_ERROR, { name: "spell", property: "name", value: name });
           return;
         }
 
-        const cell = button.closest(DMV.tableCell);
-        const paragraphs = Array.from(cell.querySelectorAll(DMV.paragraph));
+        const cell = /** @type {HTMLElement} */ (button.closest(DMV.tableCell));
+        const paragraphs = /** @type {HTMLElement[]} */ (Array.from(cell.querySelectorAll(DMV.paragraph)));
         const description = paragraphs.map((p) => p.innerText).join("\n");
         if (!isValidDescription(description)) {
           store.dispatch(STORE_ERROR, { name, property: "description", value: description });

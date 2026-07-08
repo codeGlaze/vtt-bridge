@@ -39,6 +39,10 @@ npm run test:e2e
 # Lint with ESLint
 npm run lint
 
+# Type-check the JSDoc annotations with TypeScript (requires `wxt prepare`,
+# which `npm install`'s postinstall hook already runs)
+npm run typecheck
+
 # Check formatting with Prettier
 npm run format:check
 

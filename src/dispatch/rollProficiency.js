@@ -9,7 +9,7 @@ export const addRollProficiencyListeners = (store) =>
 
 const ready = (store) => {
   const className = classes.rollProficiency;
-  const tables = document.querySelector(DMV.detailsColumns).querySelectorAll(DMV.table);
+  const tables = /** @type {HTMLElement} */ (document.querySelector(DMV.detailsColumns)).querySelectorAll(DMV.table);
 
   for (const table of tables) {
     const rows = table.querySelectorAll(DMV.tableRow);
@@ -20,14 +20,14 @@ const ready = (store) => {
         continue;
       }
 
-      const cells = Array.from(row.querySelectorAll(DMV.tableCell));
+      const cells = /** @type {HTMLElement[]} */ (Array.from(row.querySelectorAll(DMV.tableCell)));
       const name = cells[0].innerText;
       if (!isValidName(name)) {
         store.dispatch(STORE_ERROR, { name: "proficiency", property: "name", value: name });
         continue;
       }
 
-      const button = row.querySelector(DMV.rollButton);
+      const button = /** @type {HTMLElement} */ (row.querySelector(DMV.rollButton));
 
       // Temporary workaround: tool buttons are not compact.
       const mod = button.innerText === "Roll" ? cells[cells.length - 2].innerText : button.innerText;

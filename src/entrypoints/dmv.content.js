@@ -19,18 +19,23 @@ export default defineContentScript({
     const store = createStore();
     addDispatchers(store, () => showConnected());
 
+    /** @type {import("@/transform/error").ValidationError | null} */
     let lastError = null;
     let lastVisibility = true;
     store.subscribe((state) => {
       if (state.click !== null) {
-        const { toast, intent } = parseState(state);
+        // `state.click !== null` guarantees this is a fully-populated DmvState,
+        // matching what parseState expects.
+        const { toast, intent } = parseState(/** @type {import("@/transform/state").DmvState} */ (state));
         showToast(toast);
         console.debug(`Showed command toast: ${toast}`);
         const intents = [intent];
         browser.runtime.sendMessage({ type: messageType.enqueue, intents });
         console.debug(`Sent intents to background: ${JSON.stringify(intents)}`);
       } else if (state.error !== lastError) {
-        showError(formatError(state.error));
+        // Only ever set to a ValidationError (see src/store.js's `setError`
+        // mutation) once non-null, so this branch always sees a real error.
+        showError(formatError(/** @type {import("@/transform/error").ValidationError} */ (state.error)));
         lastError = state.error;
         console.debug(`Showed error toast: ${JSON.stringify(state.error)}`);
       } else if (state.visible !== lastVisibility) {

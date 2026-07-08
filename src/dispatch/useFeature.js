@@ -18,13 +18,19 @@ export const addUseFeatureListeners = (store) => {
   );
 };
 
+/**
+ * @param {*} store
+ * @param {string} selector
+ */
 const ready = (store, selector) => {
   const className = classes.useFeature;
-  const children = document.querySelector(selector).querySelectorAll(DMV.paragraph);
+  const children = /** @type {HTMLElement} */ (document.querySelector(selector)).querySelectorAll(DMV.paragraph);
 
   for (const child of children) {
     // There may be more spans, but we don't care about them.
-    const [featureSpan, detailsSpan, ,] = child.querySelectorAll(DMV.featureEntrySpans);
+    const [featureSpan, detailsSpan, ,] = /** @type {NodeListOf<HTMLElement>} */ (
+      child.querySelectorAll(DMV.featureEntrySpans)
+    );
 
     const name = featureSpan.innerText;
     if (!isValidName(name)) {

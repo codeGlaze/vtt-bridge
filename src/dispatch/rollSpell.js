@@ -8,17 +8,17 @@ export const addRollSpellListeners = (store) => onElementLoad(DMV.spellRowAnchor
 
 const ready = (store) => {
   const className = classes.attackWithSpell;
-  const rows = document.querySelector(DMV.detailsColumns).querySelectorAll(DMV.spellRow);
+  const rows = /** @type {HTMLElement} */ (document.querySelector(DMV.detailsColumns)).querySelectorAll(DMV.spellRow);
 
   for (const row of rows) {
-    const cells = Array.from(row.querySelectorAll(DMV.tableCell));
+    const cells = /** @type {HTMLElement[]} */ (Array.from(row.querySelectorAll(DMV.tableCell)));
     const name = cells[0].innerText;
     if (!isValidName(name)) {
       store.dispatch(STORE_ERROR, { name: "spell", property: "name", value: name });
       continue;
     }
 
-    const button = row.querySelector(DMV.rollButton);
+    const button = /** @type {HTMLElement} */ (row.querySelector(DMV.rollButton));
 
     const attack = button.innerText;
     if (!isValidAttack(attack)) {
