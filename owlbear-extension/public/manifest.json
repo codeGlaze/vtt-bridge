@@ -1,0 +1,9 @@
+{
+  "name": "VTT Bridge",
+  "version": "1.0.0",
+  "manifest_version": 1,
+  "author": "VTT Bridge",
+  "description": "Broadcasts dice rolls from Dungeon Master's Vault character sheets into your Owlbear Rodeo room as notifications.",
+  "icon": "icon.png",
+  "background_url": "background.html"
+}

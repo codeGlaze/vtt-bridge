@@ -1,0 +1,16 @@
+{
+  "name": "vtt-bridge-owlbear-extension",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Owlbear Rodeo room extension that displays and broadcasts dice rolls tapped from Dungeon Master's Vault character sheets.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "dependencies": {
+    "@owlbear-rodeo/sdk": "^3.1.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1"
+  }
+}
