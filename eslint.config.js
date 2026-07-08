@@ -29,7 +29,7 @@ export default [
     // Playwright config and the e2e suite run under Node, not a browser --
     // except for the odd callback (see stale-queue.spec.js) evaluated
     // in-page/in-worker, which needs the webextension globals too.
-    files: ["playwright.config.js", "tests/e2e/**/*.js"],
+    files: ["playwright.config.js", "tests/e2e/**/*.js", "scripts/**/*.mjs"],
     languageOptions: {
       globals: {
         ...globals.node,

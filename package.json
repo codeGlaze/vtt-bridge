@@ -26,6 +26,7 @@
     "postinstall": "wxt prepare",
     "test": "vitest run",
     "test:e2e": "npm run build && playwright test",
+    "probe:live": "node scripts/probe-live-selectors.mjs",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

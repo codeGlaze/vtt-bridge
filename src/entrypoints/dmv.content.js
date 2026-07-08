@@ -9,7 +9,11 @@ import { parseState } from "@/transform/state";
 import { showConnected, showError, showToast, showVisibility } from "@/notify";
 
 export default defineContentScript({
-  matches: ["*://www.dungeonmastersvault.com/pages/dnd/5e/characters/*?frame=true"],
+  matches: [
+    "*://www.dungeonmastersvault.com/pages/dnd/5e/characters/*?frame=true",
+    // DMV's beta/testing site, for validating upcoming DMV releases.
+    "*://dev.dungeonmastersvault.com/pages/dnd/5e/characters/*?frame=true",
+  ],
   cssInjectionMode: "manifest",
   main() {
     const store = createStore();

@@ -8,7 +8,16 @@ Roll20 frontend change.
 
 Prerequisites: a Dungeon Master's Vault account with at least one character,
 and a Roll20 account with a game you own — ideally one Jumpgate game (the
-default for new games) and one legacy game.
+default for new games) and one legacy game. (Roll20 has no account-less demo;
+a free account's built-in tutorial game at `app.roll20.net/editor/tutorial`
+or an empty self-created game is the cheapest real chat target. An anonymous
+DMV character has no saved id and therefore no `?frame=true` sheet URL, so a
+DMV account is required for the full flow.)
+
+Before the manual pass, `npm run probe:live` (or `-- --dev` for DMV's beta
+site) checks every required DMV selector against the live site with no
+account needed — it catches selector breakage early, but it cannot exercise
+rolls end-to-end.
 
 ## Load the built extension
 
