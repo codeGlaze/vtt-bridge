@@ -1,6 +1,6 @@
 # VTT Bridge — Modernization Analysis & Roadmap
 
-*Written July 2026. Covers: current-state analysis, cross-browser (Chrome + Firefox) compatibility, maintainability, a potential OrcPub / Dungeon Master's Vault API integration, and an addendum on multi-VTT feasibility.*
+*Written July 2026. Covers: current-state analysis, cross-browser (Chrome + Firefox) compatibility, maintainability, an OrcPub / Dungeon Master's Vault API integration, the project's adoption into the OrcPub family, and an addendum on multi-VTT feasibility.*
 
 ---
 
@@ -98,7 +98,7 @@ The `:id` is the same one in the sheet URL the extension already matches. This i
 **Recommended plan:**
 
 1. **Verify the endpoint live** with a real character id (one `curl`).
-2. **Engage the DMV maintainers** — they're reachable ([Discord](https://discord.gg/uv5vXhk), active GitHub) and VTT Bridge is the *official* Roll20 integration linked from DMV's homepage, so there's standing to ask. The 2.6.0.0 release explicitly acknowledges integration breakage, making now the right moment. The concrete ask: a small, documented, versioned endpoint returning **derived** character stats as JSON (the numbers already computed for the PDF export path). Since OrcPub is EPL-2.0 open source, this can be contributed as a PR rather than requested as a favor — likely ~a few hundred lines exposing existing cljc computation server-side.
+2. **Coordinate the endpoint within the OrcPub family** — now that VTT Bridge is stewarded alongside OrcPub/DMV itself (see §4), this is internal roadmap alignment rather than an outside request. The concrete work item: a small, documented, versioned endpoint returning **derived** character stats as JSON (the numbers already computed for the PDF export path) — likely ~a few hundred lines exposing existing cljc computation server-side. The 2.6.0.0 modernization is the natural release to land it in, since integrations are expected to adapt then anyway.
 3. **Adopt a hybrid architecture** (this is the key design decision):
    - **Data from the API** — modifiers, weapons, spells, features come from the endpoint instead of `innerText` scraping. Eliminates the whole `validate.js` "is this innerText actually a modifier?" error class.
    - **Buttons still in the DOM** — injection points for click targets are inherently DOM-coupled; that doesn't go away. But anchoring buttons is far more resilient than parsing values out of table cells, and after Phase 3.6 all anchors live in one file.
@@ -117,13 +117,41 @@ The `:id` is the same one in the sheet URL the extension already matches. This i
 | 2. Jumpgate hardening | 1–2 days | Roll20 side reliable on current platform |
 | 3. Toolchain/tests | 2–4 days | CI green, one language, deps current |
 | 4. Release automation | 1–2 days | One-command releases to both stores |
-| 5. API integration | 1–2 weeks incl. upstream PR | Resilience to DMV changes; the long-term maintainability payoff |
+| 5. API integration | 1–2 weeks incl. the orcpub-side endpoint | Resilience to DMV changes; the long-term maintainability payoff |
 
 Phases 1+2 are one combined "resurrection release" (target: well before **Aug 31, 2026**). Phase 5 runs partly on the DMV maintainers' timeline, so start the conversation early even though the code lands last.
 
 ---
 
-## 4. Addendum — Feasibility: bridging to multiple VTT platforms
+## 4. Stewardship transition — VTT Bridge joins the OrcPub project family
+
+*Added July 2026: the original author has stepped away from the project and the community, and VTT Bridge is being adopted into the OrcPub family of projects. Implications:*
+
+### 4.1 Store listings are the urgent, non-code problem
+
+Both published listings live under the original author's personal developer accounts:
+
+- **Chrome Web Store** (`fadncbccmelchegmlghbhpjchdmghmhh`): the extension is already dark for Chrome users (MV2 disabled since July 2025), and the listing is deleted on Aug 31, 2026 regardless. **If account access can't be recovered, little is actually lost** — publish the Phase 1 MV3 build as a *new* listing under an OrcPub-controlled publisher account. Chrome users have to "reinstall" either way, since nothing works for them today.
+- **AMO / Firefox** (`addons.mozilla.org/.../vtt-bridge`): this one matters much more. **Firefox users are the only ones with a working extension right now**, and they can only receive updates through that existing listing. AMO supports adding authors and transferring add-on ownership — if the original author is reachable at all, an AMO ownership transfer (plus CWS item transfer, which Google also supports) is the single most valuable thing to ask for. If not, a new AMO listing (new `gecko.id`) is required and existing users must migrate manually — announce via the DMV blog, Discord `#vtt-bridge`, and ideally a final in-extension notice if one last update can somehow be pushed to the old listing.
+
+Decide this **before** Phase 1's store re-submission step, since it determines which publisher accounts and extension IDs the MV3 build ships under.
+
+### 4.2 What gets easier
+
+- **Phase 5 (API) is now first-party.** The derived-stats endpoint becomes a coordinated feature across two repos in the same family, plannable against the DMV 2.6.0.0 modernization instead of pitched from outside. Longer term, being first-party opens options DOM-scraping never had — e.g., DMV itself emitting roll events or data attributes for the extension post-2.6.0.0, shrinking the scraping surface to near zero.
+- **Compatibility coordination**: DMV DOM changes can be tested against the extension before they ship, instead of discovered by users. A shared-release checklist item ("run vtt-bridge e2e against staging") replaces the Phase 4 canary's guesswork.
+- **The multi-VTT addendum strengthens**: as the OrcPub family's official bridge, "DMV → any VTT" is a coherent product direction rather than scope creep — though the demand-gating recommendation in §5 still applies.
+
+### 4.3 Housekeeping this triggers
+
+- **README**: the "Project Status: maintenance mode" section, badges, wiki/FAQ/support links all describe the original author's repo and intent — rewrite for the new home (fold into Phase 4's docs task). Keep the Credits section; MIT requires preserving the original copyright notice in `LICENSE`, and crediting the original author is the right thing to do regardless.
+- **Repo home**: if the canonical repo moves into the OrcPub GitHub org, use GitHub's *transfer* feature (preserves stars, issues, redirects) rather than a fresh fork, if possible.
+- **Licensing**: no conflict — the extension stays MIT while orcpub is EPL-2.0; they're separate codebases and both licenses are compatible with that arrangement. New API code contributed to the orcpub repo lands under EPL-2.0.
+- **`package.json` / `manifest.json` author metadata**, issue-template links, and the DEVELOPERS.md wiki pointer (currently the old author's wiki) all need updating.
+
+---
+
+## 5. Addendum — Feasibility: bridging to multiple VTT platforms
 
 *Quick exploration (July 2026): could VTT Bridge become "DMV → any VTT" instead of "DMV → Roll20"?*
 
@@ -167,7 +195,7 @@ The existing `transform/` functions become the *Roll20 sink's renderer* — they
 
 ---
 
-## 5. Key references
+## 6. Key references
 
 - [Chrome MV2 deprecation timeline](https://developer.chrome.com/docs/extensions/develop/migrate/mv2-deprecation-timeline) · [MDN cross-browser `background` key](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/background) · [Firefox MV3 migration guide](https://extensionworkshop.com/documentation/develop/manifest-v3-migration-guide/)
 - [WXT](https://wxt.dev/) · [web-ext](https://github.com/mozilla/web-ext) · [MDN `storage.session`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/session)
