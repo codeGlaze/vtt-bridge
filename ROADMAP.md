@@ -1,6 +1,6 @@
 # VTT Bridge — Modernization Analysis & Roadmap
 
-*Written July 2026. Covers: current-state analysis, cross-browser (Chrome + Firefox) compatibility, maintainability, and a potential OrcPub / Dungeon Master's Vault API integration.*
+*Written July 2026. Covers: current-state analysis, cross-browser (Chrome + Firefox) compatibility, maintainability, a potential OrcPub / Dungeon Master's Vault API integration, and an addendum on multi-VTT feasibility.*
 
 ---
 
@@ -123,7 +123,51 @@ Phases 1+2 are one combined "resurrection release" (target: well before **Aug 31
 
 ---
 
-## 4. Key references
+## 4. Addendum — Feasibility: bridging to multiple VTT platforms
+
+*Quick exploration (July 2026): could VTT Bridge become "DMV → any VTT" instead of "DMV → Roll20"?*
+
+**Verdict: feasible, and the extension's architecture is ~80% of the way there — but the targets differ wildly in effort, and one refactor is a prerequisite.**
+
+### The prerequisite refactor: structured roll intents
+
+Today the pipeline bakes **Roll20 chat strings** at click time: `parseState()` runs the `transform/` command builders on the DMV side, and the background queue stores literal `"/roll 1d20+5"` strings. That hard-wires Roll20 into every layer. The multi-VTT shape is:
+
+```
+DMV script  →  structured roll intent          →  background router  →  per-VTT sink
+               { type: "skill", name, mod,        broadcasts to all      renders intent into
+                 advantage, visible, ... }         registered VTT tabs    that VTT's format
+```
+
+The existing `transform/` functions become the *Roll20 sink's renderer* — they don't get thrown away, they move behind an interface. This is Beyond20's exact architecture (per-site content scripts + a background message router that broadcasts rolls to every open VTT tab; rolls rendered once, injected by thin per-VTT scripts). It's cheap to adopt this shape during the Phase 1–2 rework (the queue format changes anyway when it moves to `storage.session`), even if only Roll20 ships at first.
+
+### Target-by-target feasibility
+
+| Target | Reachable? | Integration path | Effort |
+|---|---|---|---|
+| **Owlbear Rodeo** | ✅ Browser, fixed domain | **Official extension SDK** ([docs.owlbear.rodeo](https://docs.owlbear.rodeo/extensions/getting-started/), `@owlbear-rodeo/sdk`) — OBR extensions are small iframed web apps; no DOM scraping at all. [Owl20](https://github.com/uberdragon/owl20) already proves this exact bridge pattern (it forwards Beyond20 rolls into OBR rooms). | **Low** — the cleanest first expansion |
+| **Foundry VTT** | ✅ Browser, but **arbitrary self-hosted domains** | Two-part, following Beyond20: extension side needs **optional host permissions + a user-configured custom-domains setting** (fixed `matches` can't cover localhost/forge-vtt/user domains); plus a small **companion Foundry module** so rolls are native (visible to players without the extension). Foundry's module API is rich and the preferred path over chat-DOM injection. | **Medium** — plus annual Foundry major versions (v14 as of Apr 2026) to track |
+| **Alchemy RPG** | ✅ Browser | DOM-level only today; has a JSON character-*import* format but no public roll API ([docs](https://alchemyrpg.github.io/slate/)). Beyond20 lists it as a recognized VTT; depth of that integration unverified. | Medium, fragile |
+| **D&D Beyond Maps** | ✅ Browser, single domain | No extension API; would be DOM injection. WotC's actively developed VTT — worth watching, not building on yet. | Watchlist |
+| **Other browser VTTs** (Shard Tabletop, Quest Portal, Role, Let's Role) | ✅ | No extension SDKs — DOM scraping each. Only worth it on user demand. | Per-site |
+| **Fantasy Grounds, TaleSpire** | ❌ Desktop apps | Out of scope for a browser bridge. (TaleSpire's "Symbiote" HTML panels would require a cloud relay — see dddice below.) | — |
+| **Sigil** | ❌ Dead | WotC shuts it down Oct 31, 2026. | — |
+
+### Two proven reference architectures
+
+- **Beyond20 model** (local, serverless): background script broadcasts each roll to every open, registered VTT tab; no server, no accounts. It also exposes a **DOM custom-events API** (`Beyond20_RenderedRoll` etc.) so *other sites can integrate with it* rather than it scraping them — that's how Alchemy and Owl20 hooked in. Cheap insurance: emitting similar events from VTT Bridge costs a few lines and lets third parties build sinks we never have to maintain.
+- **dddice model** (cloud relay): per-site content scripts plus native plugins (Foundry module, OBR extension, TaleSpire Symbiote) all joined through dddice's cloud "room" API. Reaches desktop apps, but requires running a service and user accounts. **Not recommended** for VTT Bridge — it abandons the "no data collected, no server" property, which is a genuine selling point of this extension.
+
+### Recommendation
+
+1. Adopt the **structured-intent + per-VTT-sink shape during Phases 1–2** regardless of whether multi-VTT ever ships — it also cleanly separates the DMV-scraping side from the Roll20-injection side, which Phase 5's API work wants anyway.
+2. If/when expanding: **Owlbear Rodeo first** (official SDK, low effort, active ecosystem), **Foundry second** (biggest audience, medium effort, needs the companion module + optional-host-permission UX).
+3. Skip cloud-relay architectures; stay serverless like Beyond20.
+4. One honest caution: each VTT added is a permanent maintenance surface on someone else's product. Given the project's small size, gate each new sink on demonstrated user demand (Discord requests, GitHub issues), not completeness.
+
+---
+
+## 5. Key references
 
 - [Chrome MV2 deprecation timeline](https://developer.chrome.com/docs/extensions/develop/migrate/mv2-deprecation-timeline) · [MDN cross-browser `background` key](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/background) · [Firefox MV3 migration guide](https://extensionworkshop.com/documentation/develop/manifest-v3-migration-guide/)
 - [WXT](https://wxt.dev/) · [web-ext](https://github.com/mozilla/web-ext) · [MDN `storage.session`](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/session)
