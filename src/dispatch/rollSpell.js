@@ -4,8 +4,10 @@ import { DMV } from "@/selectors";
 import { isValidAttack, isValidName } from "../transform/validate";
 
 // Brittle: wait for any spell row to load.
+/** @param {import("../store").Store} store */
 export const addRollSpellListeners = (store) => onElementLoad(DMV.spellRowAnchor, () => ready(store));
 
+/** @param {import("../store").Store} store */
 const ready = (store) => {
   const className = classes.attackWithSpell;
   const rows = /** @type {HTMLElement} */ (document.querySelector(DMV.detailsColumns)).querySelectorAll(DMV.spellRow);

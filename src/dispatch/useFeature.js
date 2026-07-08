@@ -3,6 +3,7 @@ import { classes, onElementLoad } from "../common";
 import { DMV } from "@/selectors";
 import { isValidDescription, isValidName } from "../transform/validate";
 
+/** @param {import("../store").Store} store */
 export const addUseFeatureListeners = (store) => {
   onElementLoad(`${DMV.actionsSection} ${DMV.paragraph} ${DMV.featureEntrySpans}`, () =>
     ready(store, DMV.actionsSection),
@@ -22,6 +23,7 @@ export const addUseFeatureListeners = (store) => {
  * @param {*} store
  * @param {string} selector
  */
+/** @param {import("../store").Store} store */
 const ready = (store, selector) => {
   const className = classes.useFeature;
   const children = /** @type {HTMLElement} */ (document.querySelector(selector)).querySelectorAll(DMV.paragraph);

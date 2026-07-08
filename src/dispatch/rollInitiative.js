@@ -4,8 +4,10 @@ import { DMV } from "@/selectors";
 
 import { isValidMod } from "../transform/validate";
 
+/** @param {import("../store").Store} store */
 export const addRollInitiativeListeners = (store) => onElementLoad(DMV.initiative, () => ready(store));
 
+/** @param {import("../store").Store} store */
 const ready = (store) => {
   const className = classes.rollInitiative;
   const name = "initiative";

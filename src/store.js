@@ -19,11 +19,14 @@
  */
 
 /**
- * @returns {{
- *   dispatch: (actionName: keyof typeof actions, payload: any) => void,
- *   subscribe: (callback: (state: StoreState) => void) => void,
- * }}
+ * The store handle the DMV content script and dispatch modules work with.
+ *
+ * @typedef {Object} Store
+ * @property {(actionName: keyof typeof actions, payload: any) => void} dispatch
+ * @property {(callback: (state: StoreState) => void) => void} subscribe
  */
+
+/** @returns {Store} */
 export const createStore = () => {
   /** @type {StoreState} */
   let state = { ...initialState };

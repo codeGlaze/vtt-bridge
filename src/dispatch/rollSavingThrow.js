@@ -4,8 +4,10 @@ import { DMV } from "@/selectors";
 import { isValidMod, isValidName } from "../transform/validate";
 
 // Brittle: wait for any saving throw name to load.
+/** @param {import("../store").Store} store */
 export const addRollSavingThrowListeners = (store) => onElementLoad(DMV.savingThrowNameAnchor, () => ready(store));
 
+/** @param {import("../store").Store} store */
 const ready = (store) => {
   const className = classes.rollSavingThrow;
 

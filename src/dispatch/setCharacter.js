@@ -2,8 +2,10 @@ import { STORE_CHARACTER } from "../store";
 import { DMV } from "@/selectors";
 import { onElementLoad } from "../common";
 
+/** @param {import("../store").Store} store */
 export const setCharacter = (store) => onElementLoad(DMV.characterName, () => ready(store));
 
+/** @param {import("../store").Store} store */
 const ready = (store) => {
   // Brittle: assumes the element is present, as guaranteed by onElementLoad.
   const character = /** @type {HTMLElement} */ (document.querySelector(DMV.characterName)).innerText;

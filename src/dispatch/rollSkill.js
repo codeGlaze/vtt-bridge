@@ -3,8 +3,10 @@ import { classes, onElementLoad } from "../common";
 import { DMV } from "@/selectors";
 import { isValidMod, isValidName } from "../transform/validate";
 
+/** @param {import("../store").Store} store */
 export const addRollSkillListeners = (store) => onElementLoad(DMV.skills, () => ready(store));
 
+/** @param {import("../store").Store} store */
 const ready = (store) => {
   const rows = /** @type {HTMLElement} */ (document.querySelector(DMV.skills)).querySelectorAll(DMV.tableRow);
 

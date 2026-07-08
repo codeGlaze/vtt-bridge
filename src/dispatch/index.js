@@ -7,6 +7,7 @@ import { DMV } from "@/selectors";
 import { onElementLoad } from "../common";
 import { setCharacter } from "./setCharacter";
 
+/** @param {import("../store").Store} store */
 export const addDispatchers = (store, callback) =>
   // Brittle: use class name as a proxy for the app loading.
   onElementLoad(DMV.appReady, () => {

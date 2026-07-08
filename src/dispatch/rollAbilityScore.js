@@ -4,8 +4,10 @@ import { DMV } from "@/selectors";
 
 import { isValidMod } from "../transform/validate";
 
+/** @param {import("../store").Store} store */
 export const addRollAbilityScoreListeners = (store) => onElementLoad(DMV.abilityScores, () => ready(store));
 
+/** @param {import("../store").Store} store */
 const ready = (store) => {
   const className = classes.rollAbilityScore;
   const buttons = /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll(DMV.abilityScoreRollButtons));

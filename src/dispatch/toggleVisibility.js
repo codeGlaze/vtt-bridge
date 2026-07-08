@@ -3,8 +3,10 @@ import { DMV } from "@/selectors";
 
 import { STORE_VISIBILITY } from "../store";
 
+/** @param {import("../store").Store} store */
 export const addToggleVisibilityListeners = (store) => onElementLoad(DMV.characterSummary, () => ready(store));
 
+/** @param {import("../store").Store} store */
 const ready = (store) => {
   let visible = true;
 

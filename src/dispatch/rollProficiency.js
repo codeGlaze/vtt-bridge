@@ -4,9 +4,11 @@ import { DMV } from "@/selectors";
 import { isValidMod, isValidName } from "../transform/validate";
 
 // Brittle: wait for any roll button to load.
+/** @param {import("../store").Store} store */
 export const addRollProficiencyListeners = (store) =>
   onElementLoad(DMV.proficiencyRollButtonAnchor, () => ready(store));
 
+/** @param {import("../store").Store} store */
 const ready = (store) => {
   const className = classes.rollProficiency;
   const tables = /** @type {HTMLElement} */ (document.querySelector(DMV.detailsColumns)).querySelectorAll(DMV.table);

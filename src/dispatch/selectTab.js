@@ -13,8 +13,10 @@ let activeTab = -1;
 
 // Brittle: wait for any tab to load.
 // We need the ".w-50-p" to exclude banner ads.
+/** @param {import("../store").Store} store */
 export const addSelectTabListeners = (store) => onElementLoad(DMV.tabs, () => ready(store));
 
+/** @param {import("../store").Store} store */
 const ready = (store) => {
   // Find all 5 tabs. A tab is not done loading until it has an orange bar as its child.
   const [combatTab, proficienciesTab, spellsTab, featuresTab, equipmentTab] = /** @type {NodeListOf<HTMLElement>} */ (

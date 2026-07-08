@@ -4,8 +4,10 @@ import { DMV } from "@/selectors";
 import { isValidAttack, isValidDamage, isValidName } from "../transform/validate";
 
 // Brittle: wait for any roll button to load.
+/** @param {import("../store").Store} store */
 export const addWeaponListeners = (store) => onElementLoad(DMV.weaponRollButtonAnchor, () => ready(store));
 
+/** @param {import("../store").Store} store */
 const ready = (store) => {
   const rows = /** @type {HTMLElement} */ (document.querySelector(DMV.weapons)).querySelectorAll(DMV.tableRow);
 
@@ -45,7 +47,7 @@ const ready = (store) => {
         damage = damage.slice("v ".length);
       }
       if (!isValidDamage(damage)) {
-        store.dispach("error", { name, property: "damage", value: damage });
+        store.dispatch(STORE_ERROR, { name, property: "damage", value: damage });
         continue;
       }
 
